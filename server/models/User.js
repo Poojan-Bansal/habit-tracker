@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      required: true, // this will store the bcrypt‐hashed password
+      required: true, 
     },
   },
   { timestamps: true }
