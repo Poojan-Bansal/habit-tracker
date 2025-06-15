@@ -27,7 +27,6 @@ const habitSchema = new mongoose.Schema(
       required: true,
     },
 
-    // ✅ Add these two fields:
     streak: {
       type: Number,
       default: 0,
