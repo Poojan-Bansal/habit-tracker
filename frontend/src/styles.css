@@ -1,0 +1,247 @@
+/* Root colors */
+:root {
+  --color-primary: #5A67D8;       /* Indigo */
+  --color-primary-light: #7F56D9; /* Light Indigo */
+  --color-secondary: #F9FAFB;     /* Light gray background */
+  --color-accent: #14B8A6;        /* Teal */
+  --color-accent-hover: #0D9488;  /* Darker teal */
+  --color-text-primary: #1F2937;  /* Dark gray text */
+  --color-text-secondary: #4B5563; /* Medium gray */
+  --color-border: #E5E7EB;        /* Light border */
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Global styles */
+body, html {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-secondary);
+  color: var(--color-text-primary);
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Container wrapper */
+.container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(90, 103, 216, 0.1);
+  box-sizing: border-box;
+}
+
+/* Center forms vertically & horizontally */
+.centered-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;       /* full viewport height */
+  width: 100vw;        /* full viewport width */
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Login/Signup card */
+.container.form-container {
+  width: 100%;
+  max-width: 360px;    /* tighter than 400px */
+  margin: 0;           /* centered by .centered-container */
+  padding: 2rem 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(90, 103, 216, 0.1);
+}
+
+/* Override for wide dashboard */
+.dashboard-container {
+  max-width: 1400px;   /* stretch wider than 900px but cap at 1400px */
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+}
+
+/* Headings */
+h1, h2, h3 {
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+/* General Buttons */
+button {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 8px rgba(90, 103, 216, 0.3);
+}
+button:hover {
+  background-color: var(--color-primary-light);
+  box-shadow: 0 4px 12px rgba(127, 86, 217, 0.4);
+}
+
+/* Shrink the “switch” buttons on login/signup pages */
+.switch-button {
+  font-size: 0.85rem;
+  padding: 4px 8px;
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* Form inputs — darker text and smaller boxes */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  color: var(--color-text-primary);
+  font-size: 0.9rem;    /* slightly smaller font */
+  padding: 6px 10px;     /* less vertical & horizontal padding */
+  margin: 8px 0 12px;
+  border-radius: 8px;
+  border: 1.5px solid var(--color-border);
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--color-text-secondary);
+}
+input:focus,
+textarea:focus {
+  border-color: var(--color-accent);
+  outline: none;
+}
+
+/* Habit cards grid */
+.habits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;           /* tighter gap */
+  justify-items: stretch;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 1100px) {
+  .habits-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 700px) {
+  .habits-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Habit card styling */
+.habit-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.15);
+  transition: box-shadow 0.3s ease;
+}
+.habit-card:hover {
+  box-shadow: 0 8px 25px rgba(20, 184, 166, 0.3);
+}
+
+/* Habit title & description */
+.habit-title {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--color-primary);
+  margin-bottom: 0.5rem;
+}
+.habit-desc {
+  color: var(--color-text-secondary);
+  margin-bottom: 1rem;
+}
+
+/* Streak badge */
+.streak-badge {
+  display: inline-block;
+  background-color: var(--color-accent);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 3px 10px rgba(20, 184, 166, 0.4);
+  transition: background-color 0.3s ease;
+}
+.streak-badge:hover {
+  background-color: var(--color-accent-hover);
+}
+
+/* Pulse animation */
+.habit-complete {
+  animation: pulse 1.2s ease forwards;
+}
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(20, 184, 166, 0.7); }
+  70%  { box-shadow: 0 0 0 15px rgba(20, 184, 166, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(20, 184, 166, 0); }
+}
+
+/* Habit card action buttons */
+.habit-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.complete-btn,
+.delete-btn {
+  padding: 0.25rem 0.5rem;    /* smaller padding */
+  font-size: 0.85rem;         /* smaller font */
+  border-radius: 4px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* Complete button */
+.complete-btn {
+  background-color: var(--color-accent);
+  color: white;
+}
+.complete-btn:hover {
+  background-color: var(--color-accent-hover);
+}
+
+/* Delete button */
+.delete-btn {
+  background-color: #ef4444;
+  color: white;
+}
+.delete-btn:hover {
+  background-color: #dc2626;
+}
+
+/* Dashboard header */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.dashboard-header button {
+  background-color: var(--color-accent);
+  padding: 10px 18px;
+}
+.dashboard-header button:hover {
+  background-color: var(--color-accent-hover);
+}
