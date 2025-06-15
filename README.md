@@ -1,3 +1,5 @@
+
+
 # Habit Buddy
 
 A simple full-stack Habit Tracker application with user authentication and habit management (create, list, update, complete with streak logic, and delete). Built with Node.js, Express, MongoDB on the backend, and React (Vite) on the frontend.
@@ -6,48 +8,69 @@ A simple full-stack Habit Tracker application with user authentication and habit
 
 ## Table of Contents
 
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Prerequisites](#prerequisites)
-- [Project Structure](#project-structure)
-- [Environment Variables](#environment-variables)
-  - [Backend `.env.example`](#backend-envexample)
-  - [Frontend `.env.example`](#frontend-envexample)
-- [Getting Started (Local Development)](#getting-started-local-development)
-  - [Clone the Repo](#clone-the-repo)
-  - [Setup Backend](#setup-backend)
-  - [Setup Frontend](#setup-frontend)
-- [API Endpoints](#api-endpoints)
-- [Frontend Usage](#frontend-usage)
-- [Testing the API](#testing-the-api)
-- [Scripts and Commands](#scripts-and-commands)
-- [Git & Version Control](#git--version-control)
-- [Deployment](#deployment)
-  - [Backend Deployment](#backend-deployment)
-  - [Frontend Deployment](#frontend-deployment)
-- [Environment-Specific Git Ignore](#environment-specific-git-ignore)
-- [Future Improvements](#future-improvements)
-- [Contributing](#contributing)
-- [License](#license)
+- [Habit Buddy](#habit-buddy)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Tech Stack](#tech-stack)
+  - [Prerequisites](#prerequisites)
+  - [Project Structure](#project-structure)
+  - [Environment Variables](#environment-variables)
+    - [Backend `.env.example`](#backend-envexample)
+    - [Frontend `.env.example`](#frontend-envexample)
+  - [Getting Started (Local Development)](#getting-started-local-development)
+    - [Clone the Repo](#clone-the-repo)
+    - [Setup Backend](#setup-backend)
+    - [Setup Frontend](#setup-frontend)
+    - [Use the App](#use-the-app)
+  - [API Endpoints](#api-endpoints)
+    - [Auth](#auth)
+    - [Habits (Protected: require `Authorization: Bearer <token>`)](#habits-protected-require-authorization-bearer-token)
+  - [Frontend Usage](#frontend-usage)
+  - [Testing the API](#testing-the-api)
+  - [Scripts and Commands](#scripts-and-commands)
+    - [Backend (`backend/package.json`)](#backend-backendpackagejson)
+    - [Frontend (`frontend/package.json`)](#frontend-frontendpackagejson)
+  - [Git \& Version Control](#git--version-control)
+  - [Deployment](#deployment)
+    - [Backend Deployment](#backend-deployment)
+    - [Frontend Deployment](#frontend-deployment)
+  - [Environment-Specific Git Ignore](#environment-specific-git-ignore)
+  - [Future Improvements](#future-improvements)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 ---
 
 ## Features
 
 - **User Authentication**: Register and login with JWT-based auth, password hashing via bcrypt.
+
 - **Habit Management**:
-  - Create habits with `title`, optional `description`, optional `frequency` (`daily`/`weekly`/`monthly`), optional `targetCount`.
-  - List all habits for the logged-in user.
-  - Update habit fields (title, description, frequency, targetCount).
-  - Complete habits once per period with streak-tracking logic:
-    - **Daily**: only once per day; if completed yesterday, streak increments, otherwise resets.
-    - **Weekly**: only once per week; if completed in the immediately previous week, streak increments, otherwise resets.
-    - **Monthly**: only once per month; if completed in the immediately previous month, streak increments, otherwise resets.
-  - Delete habits.
+
+- Create habits with `title`, optional `description`, optional `frequency` (`daily`/`weekly`/`monthly`), optional `targetCount`.
+
+- List all habits for the logged-in user.
+
+- Update habit fields (title, description, frequency, targetCount).
+
+- Complete habits once per period with streak-tracking logic:
+
+- **Daily**: Only once per day; streak increments if completed yesterday, otherwise resets to 1
+
+- **Weekly**: Only once per week; streak increments if completed in the previous calendar week, otherwise resets to 1
+
+- **Monthly**: Only once per month; streak increments if completed in the previous calendar month, otherwise resets to 1
+
+- Delete habits.
+
 - **Front-End**: React app bootstrapped with Vite; components for login/signup, dashboard, habit form/card.
+
 - **Back-End**: Node.js + Express, MongoDB via Mongoose, CORS for local development, environment config via dotenv.
+
 - **Structure**: Monorepo with separate `backend/` and `frontend/` folders.
+
 - **Clean Git**: `.gitignore` configured to ignore `node_modules/`, `.env`, build outputs, logs, etc.
+
 - **Extensible**: Placeholder for future features like reminders, analytics, profile management.
 
 ---
@@ -55,30 +78,49 @@ A simple full-stack Habit Tracker application with user authentication and habit
 ## Tech Stack
 
 - **Backend**:
-  - Node.js, Express
-  - MongoDB with Mongoose
-  - Authentication: bcrypt, jsonwebtoken
-  - Middleware: express-async-handler for async error handling, custom JWT verification middleware
-  - CORS via `cors`
-  - Configuration via `dotenv`
+
+- Node.js, Express
+
+- MongoDB with Mongoose
+
+- Authentication: bcrypt, jsonwebtoken
+
+- Middleware: express-async-handler for async error handling, custom JWT verification middleware
+
+- CORS via `cors`
+
+- Configuration via `dotenv`
+
 - **Frontend**:
-  - React (functional components, hooks) with Vite
-  - Fetch API wrapped in `src/services/api.js`
-  - Plain CSS or CSS modules
+
+- React (functional components, hooks) with Vite
+
+- Fetch API wrapped in `src/services/api.js`
+
+- Plain CSS or CSS modules
+
 - **Development Tools**:
-  - nodemon (optional) for auto-reload during backend development
-  - Vite dev server for fast frontend hot-reload
-  - Git for version control
+
+- nodemon (optional) for auto-reload during backend development
+
+- Vite dev server for fast frontend hot-reload
+
+- Git for version control
 
 ---
 
 ## Prerequisites
 
-- **Node.js & npm**: v14+ recommended. npm comes bundled with Node.js.
+- **Node.js & npm**: v16+ recommended. npm comes bundled with Node.js.
+
 - **Git**: for version control.
+
 - **MongoDB**:
-  - Local: install MongoDB Community Edition and run `mongod` locally.
-  - OR Cloud: MongoDB Atlas URI.
+
+- Local: install MongoDB Community Edition and run `mongod` locally.
+
+- OR Cloud: MongoDB Atlas URI.
+
 - **Code Editor**: VSCode recommended.
 
 ---
@@ -87,50 +129,89 @@ A simple full-stack Habit Tracker application with user authentication and habit
 
 Monorepo layout (root folder contains `backend/` and `frontend/`):
 
-habit-buddy/
-├─ backend/
-│ ├─ controllers/
-│ │ ├─ authController.js
-│ │ └─ habitController.js
-│ ├─ middleware/
-│ │ └─ verifyToken.js
-│ ├─ models/
-│ │ ├─ User.js
-│ │ └─ Habit.js
-│ ├─ routes/
-│ │ ├─ authRoutes.js
-│ │ └─ habitRoutes.js
-│ ├─ server.js
-│ ├─ package.json
-│ ├─ .env.example
-│ └─ .env # NOT committed
-└─ frontend/
-├─ public/
-│ └─ index.html
-├─ src/
-│ ├─ components/
-│ │ ├─ Login.jsx
-│ │ ├─ Signup.jsx
-│ │ ├─ Dashboard.jsx
-│ │ ├─ HabitForm.jsx
-│ │ ├─ HabitCard.jsx
-│ │ └─ Header.jsx
-│ ├─ services/
-│ │ └─ api.js
-│ ├─ App.jsx
-│ ├─ main.jsx
-│ ├─ styles.css / App.css
-│ └─ ...
-├─ package.json
-├─ vite.config.js
-├─ .env.example
-└─ .env # NOT committed
-├─ .gitignore
-└─ README.md
+```
 
-yaml
-Copy
-Edit
+habit-buddy/
+
+├── backend/
+
+│   ├── controllers/
+
+│   │   ├── authController.js
+
+│   │   └── habitController.js
+
+│   ├── middleware/
+
+│   │   └── verifyToken.js
+
+│   ├── models/
+
+│   │   ├── User.js
+
+│   │   └── Habit.js
+
+│   ├── routes/
+
+│   │   ├── authRoutes.js
+
+│   │   └── habitRoutes.js
+
+│   ├── server.js
+
+│   ├── package.json
+
+│   ├── .env.example
+
+│   └── .env # NOT committed
+
+└── frontend/
+
+├── public/
+
+│   └── index.html
+
+├── src/
+
+│   ├── components/
+
+│   │   ├── Login.jsx
+
+│   │   ├── Signup.jsx
+
+│   │   ├── Dashboard.jsx
+
+│   │   ├── HabitForm.jsx
+
+│   │   ├── HabitCard.jsx
+
+│   │   └── Header.jsx
+
+│   ├── services/
+
+│   │   └── api.js
+
+│   ├── App.jsx
+
+│   ├── main.jsx
+
+│   ├── styles.css (or App.css)
+
+│   └── ...
+
+├── package.json
+
+├── vite.config.js
+
+├── .env.example
+
+└── .env # NOT committed
+
+├── .gitignore
+
+└── README.md
+
+```
 
 ---
 
@@ -141,429 +222,620 @@ Environment variables are sensitive and vary per user/deployment. We commit only
 ### Backend `.env.example`
 
 ```text
+
 # Backend environment variables for Habit Buddy
 
 # MongoDB connection URI (local or Atlas). Example for local:
+
 MONGO_URI=mongodb://127.0.0.1:27017/habitbuddy
 
 # Port on which the backend server listens
+
 PORT=5000
 
 # JWT secret for signing tokens. Replace with a strong secret.
+
 JWT_SECRET=your_jwt_secret_here
-Instructions: After cloning, copy to backend/.env and fill real values:
 
-macOS/Linux/Git Bash:
+```
 
-bash
-Copy
-Edit
+**Instructions**: After cloning, create `.env` file in backend directory:
+
+```bash
+
 cd backend
-cp .env.example .env
-Windows PowerShell:
 
-powershell
-Copy
-Edit
-cd backend
-copy .env.example .env
-Open backend/.env and set actual MONGO_URI, PORT, and JWT_SECRET.
+cp .env.example .env  # macOS/Linux
 
-Frontend .env.example
-text
-Copy
-Edit
+# Windows: copy .env.example .env
+
+```
+
+Open `backend/.env` and set actual `MONGO_URI`, `PORT`, and `JWT_SECRET`.
+
+### Frontend `.env.example`
+
+```text
+
 # Frontend environment variables for Habit Buddy
 
 # Backend API base URL for development; in production, set to deployed backend URL
+
 VITE_API_URL=http://localhost:5000
-Instructions: After cloning, copy to frontend/.env:
 
-macOS/Linux/Git Bash:
+```
 
-bash
-Copy
-Edit
+**Instructions**: After cloning, create `.env` file in frontend directory:
+
+```bash
+
 cd frontend
-cp .env.example .env
-Windows PowerShell:
 
-powershell
-Copy
-Edit
-cd frontend
-copy .env.example .env
-Open frontend/.env and adjust VITE_API_URL as needed.
+cp .env.example .env  # macOS/Linux
 
-Note: .env files are listed in .gitignore and not tracked by Git.
+# Windows: copy .env.example .env
 
-Getting Started (Local Development)
-Clone the Repo
-bash
-Copy
-Edit
-git clone https://github.com/your-username/habit-tracker.git
+```
+
+Open `frontend/.env` and adjust `VITE_API_URL` as needed.
+
+> **Note**: `.env` files are listed in `.gitignore` and not tracked by Git.
+
+---
+
+## Getting Started (Local Development)
+
+### Clone the Repo
+
+```bash
+
+git clone https://github.com/Poojan-Bansal/habit-tracker.git
+
 cd habit-tracker
-Setup Backend
-bash
-Copy
-Edit
+
+```
+
+### Setup Backend
+
+```bash
+
 cd backend
-cp .env.example .env      # on macOS/Linux or Git Bash
-# Windows PowerShell: copy .env.example .env
 
 npm install
-node server.js            # or npm start
+
+```
+
+Create `.env` file (see [Environment Variables](#environment-variables) section) then start server:
+
+```bash
+
+node server.js  # or npm start
+
+```
+
 You should see:
 
-bash
-Copy
-Edit
+```bash
+
 ✅ MongoDB connected
+
 ✅ Server running on http://localhost:5000
-Setup Frontend
+
+```
+
+### Setup Frontend
+
 In a new terminal:
 
-bash
-Copy
-Edit
+```bash
+
 cd frontend
-cp .env.example .env      # on macOS/Linux or Git Bash
-# Windows PowerShell: copy .env.example .env
 
 npm install
-npm run dev
-You should see something like:
 
-bash
-Copy
-Edit
+```
+
+Create `.env` file (see [Environment Variables](#environment-variables) section) then start dev server:
+
+```bash
+
+npm run dev
+
+```
+
+You should see:
+
+```bash
+
 VITE vX.Y.Z  dev server running at:
 
 > Local: http://localhost:5173/
+
+```
+
 Open your browser at http://localhost:5173 to use the app.
 
-Use the App
-Sign Up: Register a user (name, email, password).
+### Use the App
 
-Login: Authenticate and store JWT token in localStorage.
+1. **Sign Up**: Register a user (name, email, password)
 
-Dashboard: List habits, add new habit, complete habit (streak logic), edit, delete.
+2. **Login**: Authenticate and store JWT token in localStorage
 
-Logout: Clear token and return to login.
+3. **Dashboard**:
 
-Error Handling: Invalid operations return errors; display messages appropriately.
+- List habits
 
-API Endpoints
-Base URL: http://localhost:5000/api
+- Add new habit
 
-Auth
-POST /api/auth/register
+- Complete habit (streak logic)
 
-Body:
+- Edit/Delete habits
 
-json
-Copy
-Edit
-{
-  "name": "Your Name",
-  "email": "you@example.com",
-  "password": "yourpassword"
-}
-Response:
+4. **Logout**: Clear token and return to login
 
-json
-Copy
-Edit
-{
-  "token": "<JWT token>",
-  "user": {
-    "id": "<user id>",
-    "name": "Your Name",
-    "email": "you@example.com"
-  }
-}
-POST /api/auth/login
+5. **Error Handling**: Invalid operations show error messages
+
+---
+
+## API Endpoints
+
+Base URL: `http://localhost:5000/api`
+
+### Auth
+
+**POST** `/api/auth/register`
 
 Body:
 
-json
-Copy
-Edit
+```json
+
 {
-  "email": "you@example.com",
-  "password": "yourpassword"
+
+"name": "Your Name",
+
+"email": "you@example.com",
+
+"password": "yourpassword"
+
 }
+
+```
+
 Response:
 
-json
-Copy
-Edit
+```json
+
 {
-  "token": "<JWT token>",
-  "user": {
-    "id": "<user id>",
-    "name": "Your Name",
-    "email": "you@example.com"
-  }
+
+"token": "<JWT token>",
+
+"user": {
+
+"id": "<user id>",
+
+"name": "Your Name",
+
+"email": "you@example.com"
+
 }
-Habits (Protected: require Authorization: Bearer <token>)
-GET /api/habits
 
-Returns array of habit objects for the logged-in user.
+}
 
-POST /api/habits
+```
+
+**POST** `/api/auth/login`
 
 Body:
 
-json
-Copy
-Edit
+```json
+
 {
-  "title": "Exercise",
-  "description": "30 min run",
-  "frequency": "daily",      // optional
-  "targetCount": 1           // optional
+
+"email": "you@example.com",
+
+"password": "yourpassword"
+
 }
-Response: created habit object.
 
-PATCH /api/habits/:id/complete
-
-Complete the habit for the current period; updates streak and lastCompleted.
-
-Response: updated habit object.
-
-Error 400 if already completed in this period.
-
-PUT /api/habits/:id
-
-Body: any of { "title": "...", "description": "...", "frequency": "...", "targetCount": ... }
-
-Response: updated habit object.
-
-DELETE /api/habits/:id
+```
 
 Response:
 
-json
-Copy
-Edit
-{ "message": "Habit deleted" }
-Frontend Usage
-src/services/api.js wraps fetch and includes JWT from localStorage for protected calls.
+```json
 
-On login/signup success: localStorage.setItem("authToken", token).
+{
 
-On 401 responses: clear token and redirect to login.
+"token": "<JWT token>",
 
-Components:
+"user": {
 
-Login.jsx / Signup.jsx: handle auth flows.
+"id": "<user id>",
 
-Dashboard.jsx: fetch and display habits.
+"name": "Your Name",
 
-HabitForm.jsx: create/edit habits.
+"email": "you@example.com"
 
-HabitCard.jsx: display habit details; buttons for “Complete”, “Edit”, “Delete”.
+}
 
-Header.jsx: logout button.
+}
 
-Styling: plain CSS; extend as desired.
+```
 
-Development: Vite hot-reloads on code changes.
+**GET** `/api/auth/logout`
 
-Testing the API
+Clears authentication token (client should remove token from storage)
+
+### Habits (Protected: require `Authorization: Bearer <token>`)
+
+**GET** `/api/habits`
+
+Returns array of habit objects for logged-in user
+
+**POST** `/api/habits`
+
+Body:
+
+```json
+
+{
+
+"title": "Exercise",
+
+"description": "30 min run",
+
+"frequency": "daily",
+
+"targetCount": 1
+
+}
+
+```
+
+Response: Created habit object
+
+**PATCH** `/api/habits/:id/complete`
+
+Complete habit for current period (updates streak and lastCompleted)
+
+Response: Updated habit object
+
+Error `400` if already completed in current period
+
+**PUT** `/api/habits/:id`
+
+Body (any combination of fields):
+
+```json
+
+{
+
+"title": "Updated Title",
+
+"description": "New description",
+
+"frequency": "weekly",
+
+"targetCount": 3
+
+}
+
+```
+
+Response: Updated habit object
+
+**DELETE** `/api/habits/:id`
+
+Response:
+
+```json
+
+{
+
+"message": "Habit deleted"
+
+}
+
+```
+
+---
+
+## Frontend Usage
+
+- `src/services/api.js`: Handles API requests with JWT authentication
+
+- Token management: `localStorage` for JWT persistence
+
+- Component structure:
+
+- `Login.jsx`/`Signup.jsx`: Authentication flows
+
+- `Dashboard.jsx`: Main habit management interface
+
+- `HabitForm.jsx`: Create/edit habit form
+
+- `HabitCard.jsx`: Display habit with action buttons
+
+- `Header.jsx`: Navigation and logout
+
+---
+
+## Testing the API
+
 Use curl or Postman:
 
-bash
-Copy
-Edit
+```bash
+
 # Register
+
 curl -X POST http://localhost:5000/api/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Test User","email":"test@example.com","password":"pass123"}'
 
-# Login
+-H "Content-Type: application/json" \
+
+-d '{"name":"Test User","email":"test@example.com","password":"pass123"}'
+
+# Login (save token)
+
 curl -X POST http://localhost:5000/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"pass123"}'
 
-# Export token
-TOKEN="<paste_token_here>"
+-H "Content-Type: application/json" \
+
+-d '{"email":"test@example.com","password":"pass123"}'
+
+# Set token variable (Unix/macOS)
+
+export TOKEN="<paste_token_here>"
 
 # Create habit
+
 curl -X POST http://localhost:5000/api/habits \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $TOKEN" \
-  -d '{"title":"Read","description":"Read 20 pages","frequency":"daily","targetCount":1}'
+
+-H "Content-Type: application/json" \
+
+-H "Authorization: Bearer $TOKEN" \
+
+-d '{"title":"Read","description":"Read 20 pages","frequency":"daily"}'
 
 # List habits
+
 curl -X GET http://localhost:5000/api/habits \
-  -H "Authorization: Bearer $TOKEN"
+
+-H "Authorization: Bearer $TOKEN"
 
 # Complete habit
+
 curl -X PATCH http://localhost:5000/api/habits/<habitId>/complete \
-  -H "Authorization: Bearer $TOKEN"
+
+-H "Authorization: Bearer $TOKEN"
 
 # Update habit
+
 curl -X PUT http://localhost:5000/api/habits/<habitId> \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $TOKEN" \
-  -d '{"frequency":"weekly"}'
+
+-H "Content-Type: application/json" \
+
+-H "Authorization: Bearer $TOKEN" \
+
+-d '{"frequency":"weekly"}'
 
 # Delete habit
+
 curl -X DELETE http://localhost:5000/api/habits/<habitId> \
-  -H "Authorization: Bearer $TOKEN"
-Scripts and Commands
-Backend (backend/package.json)
-json
-Copy
-Edit
+
+-H "Authorization: Bearer $TOKEN"
+
+```
+
+> **Windows CMD users**: Replace `export TOKEN="..."` with `set TOKEN=...` and use `%TOKEN%` instead of `$TOKEN`
+
+---
+
+## Scripts and Commands
+
+### Backend (`backend/package.json`)
+
+```json
+
 "scripts": {
-  "start": "node server.js",
-  "dev": "nodemon server.js"
+
+"start": "node server.js",
+
+"dev": "nodemon server.js"
+
 }
-npm install
 
-npm start or node server.js
+```
 
-npm run dev (with nodemon) for auto-reload
+Usage:
 
-Frontend (frontend/package.json)
-json
-Copy
-Edit
+```bash
+
+npm install       # Install dependencies
+
+npm start         # Start production server
+
+npm run dev       # Start dev server (with nodemon)
+
+```
+
+### Frontend (`frontend/package.json`)
+
+```json
+
 "scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "preview": "vite preview"
+
+"dev": "vite",
+
+"build": "vite build",
+
+"preview": "vite preview"
+
 }
-npm install
 
-npm run dev
+```
 
-npm run build (outputs to dist)
+Usage:
 
-npm run preview
+```bash
 
-Git & Version Control
-Initialize repo at project root: git init
+npm install       # Install dependencies
 
-.gitignore contents:
+npm run dev       # Start dev server
 
-bash
-Copy
-Edit
-**/node_modules/
-**/.env
-frontend/dist/
-*.log
-.vscode/
-.DS_Store
-Commit often:
+npm run build     # Create production build
 
-bash
-Copy
-Edit
+npm run preview   # Preview production build
+
+```
+
+---
+
+## Git & Version Control
+
+```bash
+
+# Initialize repo
+
+git init
+
+# Add all files
+
 git add .
-git commit -m "Describe changes"
-Push to GitHub:
 
-bash
-Copy
-Edit
+# Commit changes
+
+git commit -m "Initial commit"
+
+# Connect to remote
+
 git remote add origin https://github.com/your-username/habit-tracker.git
-git branch -M main
+
+# Push to main branch
+
 git push -u origin main
-Use branches for features: git checkout -b feature/xyz
 
-Deployment
-Backend Deployment
-bash
-Copy
-Edit
-# Example steps for a platform like Render/Heroku:
+# Create feature branch
 
-# 1. Push code to GitHub
-# 2. Connect backend repo to hosting platform
-# 3. Set environment variables on the platform:
-#    MONGO_URI, JWT_SECRET, PORT (if needed), FRONTEND_URL
-# 4. Configure CORS in server.js:
-#    const allowedOrigins = [process.env.FRONTEND_URL];
-#    app.use(cors({ origin: allowedOrigins, credentials: true }));
-# 5. Platform runs `npm start` automatically.
-# 6. Verify with GET request to deployed backend URL.
-Frontend Deployment
-bash
-Copy
-Edit
-# Example steps for Vercel/Netlify:
+git checkout -b feature/new-feature
 
-# 1. Push code to GitHub
-# 2. Connect frontend repo to hosting platform
-# 3. Set env var: VITE_API_URL=https://your-backend-url
-# 4. Build & publish:
-#    Build command: npm run build
-#    Publish directory: dist
-# 5. Verify deployed site works with backend.
-Environment-Specific Git Ignore
-Ensure .gitignore includes:
+```
 
-bash
-Copy
-Edit
+---
+
+## Deployment
+
+### Backend Deployment
+
+1. Push code to GitHub
+
+2. Create new app on hosting platform (Render, Heroku, etc.)
+
+3. Set environment variables:
+
+- `MONGO_URI` (production MongoDB URI)
+
+- `JWT_SECRET`
+
+- `PORT` (if required by host)
+
+- `FRONTEND_URL` (for CORS)
+
+4. Configure CORS in `server.js`:
+
+```js
+
+const allowedOrigins = [process.env.FRONTEND_URL];
+
+app.use(cors({
+
+origin: allowedOrigins,
+
+credentials: true
+
+}));
+
+```
+
+5. Platform should automatically run `npm start`
+
+### Frontend Deployment
+
+1. Push code to GitHub
+
+2. Create new app on hosting platform (Vercel, Netlify, etc.)
+
+3. Set environment variable:
+
+- `VITE_API_URL` (deployed backend URL)
+
+4. Configure build settings:
+
+- Build Command: `npm run build`
+
+- Publish Directory: `dist`
+
+5. Deploy application
+
+---
+
+## Environment-Specific Git Ignore
+
+```gitignore
+
+# .gitignore
+
 **/node_modules/
+
 **/.env
+
 frontend/dist/
+
 *.log
+
 .vscode/
+
 .DS_Store
-Future Improvements
-Form validation & improved UI (Tailwind, component libraries).
 
-User profile management.
+```
 
-Password reset via email.
+---
 
-Reminder/notification feature (cron + email/push).
+## Future Improvements
 
-Analytics & charts for habit history.
+- [ ] Form validation & improved UI (TailwindCSS)
 
-Pagination/filtering for many habits.
+- [ ] Password reset functionality
 
-Automated tests (Jest, Supertest, React Testing Library).
+- [ ] Habit reminders (email/notifications)
 
-CI/CD (GitHub Actions).
+- [ ] Analytics dashboard
 
-Logging & monitoring (winston/pino, Sentry).
+- [ ] Social sharing features
 
-Security enhancements (rate limiting, helmet, sanitization).
+- [ ] Mobile app (React Native)
 
-Internationalization, theming (dark mode).
+- [ ] Automated testing (Jest, React Testing Library)
 
-Mobile app version (React Native).
+- [ ] CI/CD pipeline
 
-Dockerization and docker-compose for local dev.
+- [ ] Docker support
 
-Contributing
-bash
-Copy
-Edit
-# 1. Fork the repo.
-# 2. Clone your fork.
-git clone https://github.com/your-username/habit-tracker.git
-cd habit-tracker
+---
 
-# 3. Create a branch:
-git checkout -b feature/your-feature
+## Contributing
 
-# 4. Implement changes, add tests if applicable.
+1. Fork the repository
 
-# 5. Commit:
-git add .
-git commit -m "Add feature XYZ"
+2. Create feature branch (`git checkout -b feature/your-feature`)
 
-# 6. Push:
-git push -u origin feature/your-feature
+3. Commit changes (`git commit -m 'Add some feature'`)
 
-# 7. Open a Pull Request against main.
+4. Push to branch (`git push origin feature/your-feature`)
+
+5. Open a Pull Request
+
+---
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
