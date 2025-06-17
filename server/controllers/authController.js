@@ -1,15 +1,12 @@
-// controllers/authController.js
+
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// @desc    Register a new user
-// @route   POST /api/auth/register
-// @access  Public
 exports.registerUser = async (req, res) => {
   const { name, email, password } = req.body;
 
-  // 1) Basic validation
+
   if (!name || !email || !password) {
     return res.status(400).json({ message: 'All fields are required' });
   }
@@ -53,9 +50,7 @@ exports.registerUser = async (req, res) => {
   }
 };
 
-// @desc    Login an existing user
-// @route   POST /api/auth/login
-// @access  Public
+
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
 
