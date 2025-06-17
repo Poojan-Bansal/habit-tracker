@@ -1,4 +1,4 @@
-// src/components/Dashboard.jsx
+
 import React, { useEffect, useState } from "react";
 import { habits as habitsAPI, auth as authService } from "../services/api";
 import HabitForm from "./HabitForm";
@@ -8,7 +8,7 @@ export default function Dashboard({ onLogout }) {
   const [habits, setHabits] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // 1) Fetch habits on mount
+
   useEffect(() => {
     (async () => {
       try {
@@ -22,7 +22,7 @@ export default function Dashboard({ onLogout }) {
     })();
   }, []);
 
-  // 2) Add new habit
+
   const handleAdd = async ({ title, description }) => {
     try {
       const created = await habitsAPI.create({ title, description });
@@ -32,7 +32,7 @@ export default function Dashboard({ onLogout }) {
     }
   };
 
-  // 3) Complete habit (streak logic on server)
+ 
   const handleComplete = async (id) => {
     try {
       const updated = await habitsAPI.complete(id);
@@ -42,7 +42,7 @@ export default function Dashboard({ onLogout }) {
     }
   };
 
-  // 4) Delete habit
+
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this habit?")) return;
     try {
